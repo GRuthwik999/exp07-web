@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Community Lab Hub</title>
+    <!-- jQuery Library -->
+    <script src="https://googleapis.com"></script>
+    <style>
+        /* Gaming & Community Layout Theme */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0c10;
+            color: #c5c6c7;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #45f3ff;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: #45f3ff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(69, 243, 255, 0.4);
+        }
+
+        .assignment-panel {
+            background-color: #1f2833;
+            border: 1px solid #45f3ff;
+            border-radius: 8px;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            color: #66fcf1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-size: 18px;
+            border-left: 4px solid #45f3ff;
+            padding-left: 10px;
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #a0a5c0;
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 10px;
+            background-color: #0b0c10;
+            border: 1px solid #45f3ff;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        .percentage-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            background-color: #45f3ff;
+            color: #0b0c10;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            background-color: #66fcf1;
+            box-shadow: 0 0 10px rgba(102, 252, 241, 0.5);
+        }
+
+        /* Budget Widget Box Outputs */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .box {
+            padding: 12px 5px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 12px;
+            display: none;
+        }
+
+        #box-servers { background-color: #1a365d; border: 1px solid #45f3ff; }
+        #box-prizes { background-color: #22543d; border: 1px solid #66fcf1; }
+        #box-marketing { background-color: #742a2a; border: 1px solid #ff4545; }
+        #box-savings { background-color: #553c9a; border: 1px solid #b794f4; }
+
+        /* Cake Shop Context -> Skin Shop Inventory System Grid */
+        .shop-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            background: #0b0c10;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .bill-box {
+            margin-top: 20px;
+            border-top: 2px dashed #45f3ff;
+            padding-top: 15px;
+            display: none;
+        }
+
+        .total-strip {
+            background-color: #45f3ff;
+            color: #0b0c10;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            border-radius: 4px;
+        }
+
+        /* Car Workshop -> Avatar Customizer Vector Shapes Workspace */
+        #workshop-area {
+            margin: 30px auto;
+            width: 200px;
+            height: 200px;
+            position: relative;
+            background: #0b0c10;
+            border: 2px dashed #45f3ff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #avatar-shield {
+            width: 120px;
+            height: 120px;
+            background-color: #45f3ff;
+            border-radius: 12px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        #avatar-logo {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.4);
+            position: absolute;
+            top: 35px;
+            left: 35px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-small {
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px solid #66fcf1;
+            color: #66fcf1;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .btn-small:hover {
+            background: #66fcf1;
+            color: #0b0c10;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Nexus Gaming Community Hub</h1>
+        <p>Lab Experiment 07 Refactored Framework Solutions</p>
+    </header>
+
+    <!-- 1. BUDGET CALCULATOR (Refactored: Clan Treasury Allocation) -->
+    <div class="assignment-panel">
+        <h2>1. Clan Treasury Allocation (Budget Calculator)</h2>
+        <div class="input-group">
+            <label><b>Total Clan Tournament Fund Pool (Rs.):</b></label>
+            <input type="number" id="totalFunds" value="15000" style="width: 100%;">
+        </div>
+        
+        <p style="margin-bottom: 10px; font-size: 14px; color: #66fcf1;">Divide allocation strategy percentages:</p>
+        <div class="percentage-inputs">
+            <div>
+                <label>Server Hosting (%):</label>
+                <input type="number" id="pServers" value="50" style="width: 100%;">
+            </div>
+            <div>
+                <label>Prize Pools (%):</label>
+                <input type="number" id="pPrizes" value="20" style="width: 100%;">
+            </div>
+            <div>
+                <label>Marketing (%):</label>
+                <input type="number" id="pMarketing" value="20" style="width: 100%;">
+            </div>
+            <div>
+                <label>Emergency Reserve (%):</label>
+                <input type="number" id="pSavings" value="10" style="width: 100%;">
+            </div>
+        </div>
+
+        <button class="btn-action" id="btnEvaluateBudget">Evaluate My Money</button>
+
+        <div class="results-grid">
+            <div class="box" id="box-servers">Servers<br><span id="valServers"></span></div>
+            <div class="box" id="box-prizes">Prizes<br><span id="valPrizes"></span></div>
+            <div class="box" id="box-marketing">Marketing<br><span id="valMarketing"></span></div>
+            <div class="box" id="box-savings">Reserve<br><span id="valSavings"></span></div>
+        </div>
+    </div>
+
+    <!-- 2. CAKE ORDER CALCULATION (Refactored: Community Esports Store Invoicing) -->
+    <div class="assignment-panel">
+        <h2>2. Community Esports Skin Store (Cake Order Logic)</h2>
+        <p style="font-size: 13px; color: #a0a5c0; margin-bottom: 15px;">Add quantities to generate calculations:</p>
+        
+        <div class="shop-row">
+            <span>Neon Weapon Wrap (Rs. 300)</span>
+            <input type="number" class="item-qty" value="0" min="0" data-price="300">
+        </div>
+        <div class="shop-row">
+            <span>Crimson Melee Knife (Rs. 200)</span>
+            <input type="number" class="item-qty" value="0" min="0" data-price="200">
+        </div>
+        <div class="shop-row">
+            <span>Titanium Helmet Skin (Rs. 250)</span>
+            <input type="number" class="item-qty" value="0" min="0" data-price="250">
+        </div>
+        <div class="shop-row">
+            <span>Cyber Dragon Cape (Rs. 350)</span>
+            <input type="number" class="item-qty" value="0" min="0" data-price="350">
+        </div>
+
+        <button class="btn-action" id="btnPlaceOrder">Purchase Order Bill!!!</button>
+
+        <div class="bill-box" id="invoice">
+            <div class="total-strip">
+                <span>Total Price</span>
+                <span id="totalPrice">Rs. 0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. CAR WORKSHOP (Refactored: Clan Logo/Banner Customizer Platform) -->
+    <div class="assignment-panel" style="text-align: center;">
+        <h2>3. Clan Banner Workshop (Car Workshop Logic)</h2>
+        <p style="font-size: 13px; color: #a0a5c0;">Dynamically change colors, transparent logo glow opacity, and scale dimensions via actions:</p>
+        
+        <div id="workshop-area">
+            <div id="avatar-shield">
+                <div id="avatar-logo"></div>
+            </div>
+        </div>
+
+        <div class="controls-row">
+            <button class="btn-small" id="btnColor">Change Body Color</button>
+            <button class="btn-small" id="btnTint">Change Glass Tint</button>
+            <button class="btn-small" id="btnSizeInc">Tyre Size Increase</button>
+            <button class="btn-small" id="btnSizeDec">Tyre Size Decrease</button>
+            <button class="btn-small" id="btnReset" style="border-color:#ff4545; color:#ff4545;">Reset</button>
+        </div>
+    </div>
+
